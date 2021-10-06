@@ -13,9 +13,14 @@ function App() {
         signInWithPopup(auth, googleProvider)
             .then((result) => {
                 // The signed-in user info.
-                const LoginUser = result.user;
+                const { displayName, email, photoURL } = result.user;
+                const LoginUser = {
+                    name: displayName,
+                    email: email,
+                    photo: photoURL,
+                };
                 setloggedInuser(LoginUser);
-                console.log(loggedInuser);
+
                 // ...
             })
             .catch((err) => {
@@ -43,11 +48,17 @@ function App() {
         <div className="App">
             <h1>Learn firebase for first time </h1>
             <button onClick={handleClick}>Sign In With Google </button>
-
-            {/* <button onClick={}>Sign In With Github</button> */}
-            <div>
-                <h2>name is {loggedInuser.displayName}</h2>
-            </div>
+            <br />
+            {loggedInuser.email ? (
+                <div>
+                    <h2>Welocme To {loggedInuser.name}</h2>
+                    <h3>Email: {loggedInuser.email}</h3>
+                    <img src={loggedInuser.photo} alt="" />
+                </div>
+            ) : (
+                <h2>No user found</h2>
+            )}
+            {console.log(loggedInuser.photo)}
         </div>
     );
 }
