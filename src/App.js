@@ -3,6 +3,7 @@ import {
     GithubAuthProvider,
     GoogleAuthProvider,
     signInWithPopup,
+    signOut,
 } from "firebase/auth";
 import { useState } from "react";
 import "./App.css";
@@ -53,12 +54,37 @@ function App() {
                 // ...
             });
     };
+
+    // Handle signout
+
+    const handleSignOut = () => {
+        const auth = getAuth();
+        signOut(auth)
+            .then(() => {
+                // Sign-out successful.
+                setloggedInuser({});
+            })
+            .catch((error) => {
+                alert(error.message);
+            });
+    };
     return (
         <div className="App">
             <h1>Learn firebase for first time </h1>
-            <button onClick={handleClick}>Sign In With Google </button>
-            <button onClick={loginGithub}>Sign In With Github </button>
-            <br />
+
+            {!loggedInuser.name ? (
+                <div>
+                    <button onClick={handleClick}>Sign In With Google </button>
+                    <button onClick={loginGithub}>Sign In With Github </button>
+                </div>
+            ) : (
+                <div>
+                    <br />
+                    <button onClick={handleSignOut}>SignOut</button>
+                    <br />
+                </div>
+            )}
+
             {loggedInuser.name ? (
                 <div>
                     <h2>Welocme To {loggedInuser.name}</h2>
